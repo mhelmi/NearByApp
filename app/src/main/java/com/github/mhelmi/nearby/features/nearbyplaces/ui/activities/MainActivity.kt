@@ -1,7 +1,6 @@
 package com.github.mhelmi.nearby.features.nearbyplaces.ui.activities
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -52,6 +51,7 @@ class MainActivity : AppCompatActivity() {
     private val trackingServiceIntent: Intent by lazy {
         Intent(activity, TrackingService::class.java)
     }
+    private var isFirstTimeToLoad = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,9 +76,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupObservers() {
         venueViewModel.venueList.observe(this, Observer<List<Venue>> { submitVenueList(it) })
-        venueViewModel.loading.observe(this, Observer<Boolean> { setLoading(it) })
-        venueViewModel.emptyDataError.observe(this, Observer<Boolean> { setEmptyDataError(it) })
-        venueViewModel.error.observe(this, Observer<Boolean> { setError(it) })
+        venueViewModel.shouldShowLoading.observe(this, Observer<Boolean> { shouldShowLoading(it) })
+        venueViewModel.shouldShowEmptyDataError.observe(
+            this, Observer<Boolean> { shouldShowEmptyDataError(it) }
+        )
+        venueViewModel.shouldShowGeneralError.observe(
+            this,
+            Observer<Boolean> { shouldShowGeneralError(it) })
     }
 
     fun loadVenues(location: String) {
@@ -87,25 +91,25 @@ class MainActivity : AppCompatActivity() {
 
     private fun submitVenueList(venues: List<Venue>) {
         venuesAdapter.submitList(venues)
-        recyclerViewVenues.setVisible(true)
     }
 
-    private fun setLoading(isLoading: Boolean) {
-        layoutLoadingProgress.setVisible(isLoading)
+    private fun shouldShowLoading(isLoading: Boolean) {
         if (isLoading) {
-            layoutError.setVisible(false)
-            layoutEmptyData.setVisible(false)
+            if (isFirstTimeToLoad) layoutLoadingProgress.setVisible(isLoading)
+            isFirstTimeToLoad = false
+        } else {
+            layoutLoadingProgress.setVisible(isLoading)
         }
     }
 
-    private fun setEmptyDataError(emptyData: Boolean) {
+    private fun shouldShowEmptyDataError(emptyData: Boolean) {
         layoutEmptyData.setVisible(emptyData)
-        if (emptyData) recyclerViewVenues.setVisible(false)
+        if (emptyData) venuesAdapter.submitList(null)
     }
 
-    private fun setError(error: Boolean) {
+    private fun shouldShowGeneralError(error: Boolean) {
         layoutError.setVisible(error)
-        if (error) recyclerViewVenues.setVisible(false)
+        if (error) venuesAdapter.submitList(null)
     }
 
     private fun getLastKnowingLocation() {
@@ -206,7 +210,6 @@ class MainActivity : AppCompatActivity() {
         object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
                 intent?.getStringExtra(LOCATION_EXTRA)?.let { loadVenues(it) }
-
             }
         }
     }

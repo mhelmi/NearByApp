@@ -16,29 +16,6 @@ class VenuesRepository @Inject constructor(
     val venuesDao: VenuesDao
 ) {
 
-//    fun getExploreVenues(location: String, radius: Int = 1000): Observable<Result<List<Venue>>> {
-//        return exploreVenuesApiService.exploreVenues(location, radius)
-//            .map {
-//                return@map if (it.meta.code == SUCCESS) {
-//                    val items: List<Item> = it.response.groups.flatMap { group ->
-//                        return@flatMap group.items
-//                    }
-//                    val venues: List<Venue> = items.map { item -> item.venue }
-//                    if (venues.isEmpty())
-//                        Result.emptyDataError()
-//                    else {
-//                        venues.forEach { venue ->
-//                            getVenuePhotos(venue.id)
-//                                .doOnNext { photoUrl -> venue.photoUrl = photoUrl }
-//                                .subscribe()
-//                        }
-//                        Result.success(venues)
-//                    }
-//                } else Result.authFailedError()
-//            }
-//            .doOnError { loge("getExploreVenues: onError:: ${it.message}") }
-//    }
-
     fun getExploreVenues(location: String, radius: Int = 1000): Observable<Result<List<Venue>>> {
         return exploreVenuesApiService.exploreVenues(location, radius)
             .switchMap {
@@ -79,18 +56,4 @@ class VenuesRepository @Inject constructor(
             .onErrorReturnItem(venue)
             .doOnError { loge("getVenuePhotos: onError:: ${it.message}") }
     }
-
-//    private fun getVenuePhotos(venueId: String): Single<String> {
-//        return exploreVenuesApiService.getVenuePhotos(venueId)
-//            .map {
-//                return@map if (it.meta.code == SUCCESS) {
-//                    val photos = it.response.photos.photoList
-//                    if (photos.isEmpty())
-//                        ""
-//                    else
-//                        photos[0].suffix
-//                } else ""
-//            }.doOnError { loge("getVenuePhotos: onError:: ${it.message}") }
-//    }
-
 }
