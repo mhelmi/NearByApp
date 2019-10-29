@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.github.mhelmi.nearby.features.nearbyplaces.ui.activities.MainActivity">
+    <item
+        android:id="@+id/actionLocationUpdateModeToggle"
+        app:actionLayout="@layout/item_toggle_button"
+        android:orderInCategory="100"
+        android:title="@string/single_update"
+        app:showAsAction="ifRoom" />
+</menu>

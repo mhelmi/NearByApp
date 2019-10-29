@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">NearBy</string>
+    <string name="action_settings">Settings</string>
+    <string name="error_empty_data">No data found !!</string>
+    <string name="error">Something went wrong !!</string>
+    <string name="loading_text">Please wait…</string>
+    <string name="tracking_location_notification_title">Start Tracking Location</string>
+    <string name="tracking_location_notification_text">Tracking location service running…</string>
+    <string name="runtime">Runtime</string>
+    <string name="single_update">Single Update</string>
+    <string name="location_tracking">Location Tracking</string>
+</resources>
