@@ -3,23 +3,23 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
-def keystorePropertiesFile = rootProject.file("keystore.properties")
-def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+//def keystorePropertiesFile = rootProject.file("keystore.properties")
+//def keystoreProperties = new Properties()
+//keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
     signingConfigs {
         release {
-            keyAlias keystoreProperties['releaseKeyAlias']
-            keyPassword keystoreProperties['releaseKeyPassword']
-            storeFile file(rootDir.getCanonicalPath() + '/' + keystoreProperties['releaseKeyStore'])
-            storePassword keystoreProperties['releaseStorePassword']
+//            keyAlias keystoreProperties['releaseKeyAlias']
+//            keyPassword keystoreProperties['releaseKeyPassword']
+//            storeFile file(rootDir.getCanonicalPath() + '/' + keystoreProperties['releaseKeyStore'])
+//            storePassword keystoreProperties['releaseStorePassword']
         }
         debug {
-            keyAlias keystoreProperties['debugKeyAlias']
-            keyPassword keystoreProperties['debugKeyPassword']
-            storeFile file(rootDir.getCanonicalPath() + '/' + keystoreProperties['debugKeyStore'])
-            storePassword keystoreProperties['debugStorePassword']
+//            keyAlias keystoreProperties['debugKeyAlias']
+//            keyPassword keystoreProperties['debugKeyPassword']
+//            storeFile file(rootDir.getCanonicalPath() + '/' + keystoreProperties['debugKeyStore'])
+//            storePassword keystoreProperties['debugStorePassword']
         }
     }
     compileSdkVersion 29
@@ -74,10 +74,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test:rules:1.2.0'
 
     // shared preference
     implementation "androidx.preference:preference-ktx:1.1.0"
@@ -92,10 +89,6 @@ dependencies {
     // butter knife
     implementation 'com.jakewharton:butterknife:10.2.0'
     kapt 'com.jakewharton:butterknife-compiler:10.2.0'
-//    implementation 'androidx.room:room-runtime:2.2.1'
-//    implementation 'androidx.room:room-rxjava2:2.2.0'
-//    annotationProcessor 'androidx.room:room-compiler:2.2.0'
-//    androidTestImplementation 'androidx.room:room-testing:2.2.0'
     // Room components
     def room_version = "2.2.1"
     implementation "androidx.room:room-runtime:$room_version"
@@ -133,11 +126,4 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:17.0.0'
     // rx permissions
     implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
-//    // paging library
-//    def paging_version = "2.1.0"
-//    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
-//    // alternatively - without Android dependencies for testing
-//    testImplementation "androidx.paging:paging-common-ktx:$paging_version"
-//    // optional - RxJava support
-//    implementation "androidx.paging:paging-rxjava2-ktx:$paging_version"
 }
