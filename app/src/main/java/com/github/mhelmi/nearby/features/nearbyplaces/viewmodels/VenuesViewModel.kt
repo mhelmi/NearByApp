@@ -14,41 +14,33 @@ class VenuesViewModel constructor(private val venuesRepository: VenuesRepository
 
     private val disposable = CompositeDisposable()
     private val _venueList = MutableLiveData<List<Venue>>()
-    private val _loading = MutableLiveData<Boolean>()
-    private val _emptyDataError = MutableLiveData<Boolean>()
-    private val _error = MutableLiveData<Boolean>()
+    private val _shouldShowLoading = MutableLiveData<Boolean>()
+    private val _shouldShowEmptyDataError = MutableLiveData<Boolean>()
+    private val _shouldShowGeneralError = MutableLiveData<Boolean>()
     val venueList: LiveData<List<Venue>> = _venueList
-    val loading: LiveData<Boolean> = _loading
-    val emptyDataError: LiveData<Boolean> = _emptyDataError
-    val error: LiveData<Boolean> = _error
+    val shouldShowLoading: LiveData<Boolean> = _shouldShowLoading
+    val shouldShowEmptyDataError: LiveData<Boolean> = _shouldShowEmptyDataError
+    val shouldShowGeneralError: LiveData<Boolean> = _shouldShowGeneralError
 
     fun getAllVenues(location: String) {
         disposable.add(
             venuesRepository.getExploreVenues(location)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { _loading.postValue(true) }
+                .doOnSubscribe { _shouldShowLoading.postValue(true) }
                 .subscribe({
-                    _loading.postValue(false)
+                    _shouldShowLoading.postValue(false)
+                    _shouldShowEmptyDataError.postValue(false)
+                    _shouldShowGeneralError.postValue(false)
                     when (it.resultType) {
-                        ResultType.SUCCESS -> {
-                            _venueList.postValue(it.data)
-                            _emptyDataError.postValue(false)
-                            _error.postValue(false)
-                        }
-                        ResultType.EMPTY_DATA -> {
-                            _emptyDataError.postValue(true)
-                            _error.postValue(false)
-                        }
-                        else -> {
-                            _emptyDataError.postValue(false)
-                            _error.postValue(true)
-                        }
+                        ResultType.SUCCESS -> _venueList.postValue(it.data)
+                        ResultType.EMPTY_DATA -> _shouldShowEmptyDataError.postValue(true)
+                        else -> _shouldShowGeneralError.postValue(true)
                     }
                 }, {
-                    _loading.postValue(false)
-                    _emptyDataError.postValue(false)
-                    _error.postValue(true)
+                    _shouldShowLoading.postValue(false)
+                    _shouldShowEmptyDataError.postValue(false)
+                    _shouldShowGeneralError.postValue(true)
                 })
         )
     }
