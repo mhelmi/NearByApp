@@ -206,6 +206,11 @@ class MainActivity : AppCompatActivity() {
         if (!disposable.isDisposed) disposable.dispose()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        stopTrackingService()
+    }
+
     private val locationUpdateReceiver by lazy {
         object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
