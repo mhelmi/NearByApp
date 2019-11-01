@@ -74,8 +74,16 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
+//    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
+//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+//    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
+    // Mockito framework
+    testImplementation 'org.mockito:mockito-core:3.1.0'
+    testImplementation 'org.mockito:mockito-inline:2.13.0'
+    // google trust
+//    androidTestImplementation "com.google.truth:truth:1.0"
     // shared preference
     implementation "androidx.preference:preference-ktx:1.1.0"
     // foursquare auth
